@@ -33,7 +33,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                 controller: flutterCarouselController,
                 slideIndicator: CircularSlideIndicator(
                   slideIndicatorOptions: SlideIndicatorOptions(),
-                class _FakeSubject extends Fake implements Subject {}),
+                ),
               ),
               items: [
                 SvgPicture.asset(
