@@ -15,11 +15,28 @@ class OnBoardingScreen extends StatefulWidget {
 }
 
 class _OnBoardingScreenState extends State<OnBoardingScreen> {
+  final FlutterCarouselController flutterCarouselController =
+      FlutterCarouselController();
+  int currentIndex = 0;
+
+  // List of SVGs and their corresponding text
+  final List<Map<String, String>> onboardingItems = [
+    {
+      'image': 'assets/svgs/on_boarding_step_one.svg',
+      'text': 'Spend money abroad, and track your expense',
+    },
+    {
+      'image': 'assets/svgs/on_boarding_step_two.svg',
+      'text': 'Secure and easy transactions worldwide',
+    },
+    {
+      'image': 'assets/svgs/on_boarding_step_three.svg',
+      'text': 'Experience seamless payment options anytime',
+    },
+  ];
+
   @override
   Widget build(BuildContext context) {
-    FlutterCarouselController flutterCarouselController =
-        FlutterCarouselController();
-    int currentIndex = 0;
     return SafeArea(
       child: Scaffold(
         body: Column(
@@ -31,37 +48,23 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                 enableInfiniteScroll: false,
                 initialPage: 0,
                 controller: flutterCarouselController,
+                onPageChanged: (index, reason) {
+                  setState(() {
+                    currentIndex = index;
+                  });
+                },
               ),
-              items: [
-                SvgPicture.asset(
-                  'assets/svgs/on_boarding_step_one.svg',
+              items: onboardingItems.map((item) {
+                return SvgPicture.asset(
+                  item['image']!,
                   height: 260.h,
-                ),
-                SvgPicture.asset(
-                  'assets/svgs/on_boarding_step_two.svg',
-                  height: 260.h,
-                ),
-                SvgPicture.asset(
-                  'assets/svgs/on_boarding_step_three.svg',
-                  height: 260.h,
-                ),
-              ].map((i) {
-                return Builder(
-                  builder: (BuildContext context) {
-                    return SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      child: Center(
-                        child: i,
-                      ),
-                    );
-                  },
                 );
               }).toList(),
             ),
             verticalSpace(89),
             AnimatedSmoothIndicator(
               activeIndex: currentIndex,
-              count: 3,
+              count: onboardingItems.length,
               effect: SlideEffect(
                 spacing: 6.w,
                 radius: 19.r,
@@ -74,11 +77,12 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
               ),
             ),
             verticalSpace(22),
+            // Display dynamic text based on the currentIndex
             Container(
               padding: EdgeInsets.symmetric(horizontal: 8.h, vertical: 17.5.w),
               margin: EdgeInsets.symmetric(vertical: 8.w),
               child: Text(
-                'Spend money abroad, and track your expense',
+                onboardingItems[currentIndex]['text']!,
                 textAlign: TextAlign.center,
                 style: TextStyles.font41Black700Weight,
               ),
@@ -90,11 +94,13 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                 backgroundColor: ColorsManager.mainBlue,
               ),
               onPressed: () {
-                print('click');
-                flutterCarouselController.nextPage(
-                    duration: Duration(microseconds: 300));
-                currentIndex++;
-                setState(() {});
+                if (currentIndex < onboardingItems.length - 1) {
+                  flutterCarouselController.nextPage(
+                      duration: const Duration(milliseconds: 300));
+                  setState(() {
+                    currentIndex++;
+                  });
+                }
               },
               child: Text('Next', style: TextStyles.font16White700Weight),
             ),
