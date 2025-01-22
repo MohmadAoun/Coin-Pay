@@ -31,19 +31,19 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                 enableInfiniteScroll: false,
                 initialPage: 0,
                 controller: flutterCarouselController,
-                slideIndicator: CircularSlideIndicator(
-                  slideIndicatorOptions: SlideIndicatorOptions(),
-                ),
               ),
               items: [
                 SvgPicture.asset(
                   'assets/svgs/on_boarding_step_one.svg',
+                  height: 260.h,
                 ),
                 SvgPicture.asset(
                   'assets/svgs/on_boarding_step_two.svg',
+                  height: 260.h,
                 ),
                 SvgPicture.asset(
                   'assets/svgs/on_boarding_step_three.svg',
+                  height: 260.h,
                 ),
               ].map((i) {
                 return Builder(
@@ -92,8 +92,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
               onPressed: () {
                 print('click');
                 flutterCarouselController.nextPage(
-                    duration: Duration(milliseconds: 300),
-                    curve: Curves.linear);
+                    duration: Duration(microseconds: 300));
+                currentIndex++;
                 setState(() {});
               },
               child: Text('Next', style: TextStyles.font16White700Weight),
